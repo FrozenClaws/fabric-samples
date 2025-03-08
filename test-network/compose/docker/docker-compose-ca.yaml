@@ -3,5 +3,731 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+
 version: '3.7'
 
+networks:
+  election:
+    name: election
+    driver: bridge
+
+services:
+  # CA for ECI (Election Commission of India - Central Authority)
+  ca_eci:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-eci
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.eci.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.eci.org-key.pem
+      - FABRIC_CA_SERVER_PORT=7054
+    ports:
+      - target: 7054
+        published: 7054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.eci.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.eci.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/eci.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_eci
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for UP_O (Uttar Pradesh Election Body)
+  ca_up_o:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-up-o
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.up-o.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.up-o.org-key.pem
+      - FABRIC_CA_SERVER_PORT=8054
+    ports:
+      - target: 8054
+        published: 8054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.up-o.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.up-o.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/up-o.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_up_o
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for UP_C1 (Uttar Pradesh Constituency 1)
+  ca_up_c1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-up-c1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.up-c1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.up-c1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=9054
+    ports:
+      - target: 9054
+        published: 9054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.up-c1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.up-c1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/up-c1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_up_c1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for UP_C2 (Uttar Pradesh Constituency 2)
+  ca_up_c2:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-up-c2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.up-c2.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.up-c2.org-key.pem
+      - FABRIC_CA_SERVER_PORT=10054
+    ports:
+      - target: 10054
+        published: 10054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.up-c2.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.up-c2.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/up-c2.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_up_c2
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for MH_O (Maharashtra Election Body)
+  ca_mh_o:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-mh-o
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.mh-o.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.mh-o.org-key.pem
+      - FABRIC_CA_SERVER_PORT=11054
+    ports:
+      - target: 11054
+        published: 11054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.mh-o.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.mh-o.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/mh-o.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_mh_o
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for MH_C1 (Maharashtra Constituency 1)
+  ca_mh_c1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-mh-c1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.mh-c1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.mh-c1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=12054
+    ports:
+      - target: 12054
+        published: 12054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.mh-c1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.mh-c1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/mh-c1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_mh_c1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for MH_C2 (Maharashtra Constituency 2)
+  ca_mh_c2:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-mh-c2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.mh-c2.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.mh-c2.org-key.pem
+      - FABRIC_CA_SERVER_PORT=13054
+    ports:
+      - target: 13054
+        published: 13054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.mh-c2.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.mh-c2.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/mh-c2.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_mh_c2
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for TN_O (Tamil Nadu Election Body)
+  ca_tn_o:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-tn-o
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.tn-o.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.tn-o.org-key.pem
+      - FABRIC_CA_SERVER_PORT=14054
+    ports:
+      - target: 14054
+        published: 14054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.tn-o.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.tn-o.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/tn-o.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_tn_o
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for TN_C1 (Tamil Nadu Constituency 1)
+  ca_tn_c1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-tn-c1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.tn-c1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.tn-c1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=15054
+    ports:
+      - target: 15054
+        published: 15054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.tn-c1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.tn-c1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/tn-c1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_tn_c1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for TN_C2 (Tamil Nadu Constituency 2)
+  ca_tn_c2:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-tn-c2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.tn-c2.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.tn-c2.org-key.pem
+      - FABRIC_CA_SERVER_PORT=16054
+    ports:
+      - target: 16054
+        published: 16054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.tn-c2.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.tn-c2.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/tn-c2.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_tn_c2
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for WB_O (West Bengal Election Body)
+  ca_wb_o:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-wb-o
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wb-o.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.wb-o.org-key.pem
+      - FABRIC_CA_SERVER_PORT=17054
+    ports:
+      - target: 17054
+        published: 17054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.wb-o.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.wb-o.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/wb-o.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_wb_o
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for WB_C1 (West Bengal Constituency 1)
+  ca_wb_c1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-wb-c1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wb-c1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.wb-c1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=18054
+    ports:
+      - target: 18054
+        published: 18054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.wb-c1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.wb-c1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/wb-c1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_wb_c1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for WB_C2 (West Bengal Constituency 2)
+  ca_wb_c2:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-wb-c2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wb-c2.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.wb-c2.org-key.pem
+      - FABRIC_CA_SERVER_PORT=19054
+    ports:
+      - target: 19054
+        published: 19054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.wb-c2.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.wb-c2.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/wb-c2.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_wb_c2
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for KA_O (Karnataka Election Body)
+  ca_ka_o:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-ka-o
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.ka-o.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.ka-o.org-key.pem
+      - FABRIC_CA_SERVER_PORT=20054
+    ports:
+      - target: 20054
+        published: 20054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.ka-o.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.ka-o.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/ka-o.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_ka_o
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for KA_C1 (Karnataka Constituency 1)
+  ca_ka_c1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-ka-c1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.ka-c1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.ka-c1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=21054
+    ports:
+      - target: 21054
+        published: 21054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.ka-c1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.ka-c1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/ka-c1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_ka_c1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for KA_C2 (Karnataka Constituency 2)
+  ca_ka_c2:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-ka-c2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.ka-c2.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.ka-c2.org-key.pem
+      - FABRIC_CA_SERVER_PORT=22054
+    ports:
+      - target: 22054
+        published: 22054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.ka-c2.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.ka-c2.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/ka-c2.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_ka_c2
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for DL_O (Delhi Election Body)
+  ca_dl_o:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-dl-o
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dl-o.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.dl-o.org-key.pem
+      - FABRIC_CA_SERVER_PORT=23054
+    ports:
+      - target: 23054
+        published: 23054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.dl-o.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.dl-o.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/dl-o.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_dl_o
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for DL_C1 (Delhi Constituency 1)
+  ca_dl_c1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-dl-c1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dl-c1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.dl-c1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=24054
+    ports:
+      - target: 24054
+        published: 24054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.dl-c1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.dl-c1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/dl-c1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_dl_c1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for DL_C2 (Delhi Constituency 2)
+  ca_dl_c2:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-dl-c2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dl-c2.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.dl-c2.org-key.pem
+      - FABRIC_CA_SERVER_PORT=25054
+    ports:
+      - target: 25054
+        published: 25054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.dl-c2.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.dl-c2.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/dl-c2.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_dl_c2
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for PD_O (Puducherry Election Body)
+  ca_pd_o:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-pd-o
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.pd-o.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.pd-o.org-key.pem
+      - FABRIC_CA_SERVER_PORT=26054
+    ports:
+      - target: 26054
+        published: 26054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.pd-o.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.pd-o.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/pd-o.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_pd_o
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for PD_C1 (Puducherry Constituency 1)
+  ca_pd_c1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-pd-c1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.pd-c1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.pd-c1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=27054
+    ports:
+      - target: 27054
+        published: 27054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.pd-c1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.pd-c1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/pd-c1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_pd_c1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for PD_C2 (Puducherry Constituency 2)
+  ca_pd_c2:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-pd-c2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.pd-c2.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.pd-c2.org-key.pem
+      - FABRIC_CA_SERVER_PORT=28054
+    ports:
+      - target: 28054
+        published: 28054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.pd-c2.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.pd-c2.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/pd-c2.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_pd_c2
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for NIC (Supporting Org - National Informatics Centre)
+  ca_nic:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-nic
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nic.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.nic.org-key.pem
+      - FABRIC_CA_SERVER_PORT=29054
+    ports:
+      - target: 29054
+        published: 29054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.nic.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.nic.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/nic.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_nic
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # CA for Auditor1 (Supporting Org - Auditor)
+  ca_auditor1:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-auditor1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.auditor1.org-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.auditor1.org-key.pem
+      - FABRIC_CA_SERVER_PORT=30054
+    ports:
+      - target: 30054
+        published: 30054
+        protocol: tcp
+        mode: host
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.auditor1.org-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca.auditor1.org-key.pem -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/auditor1.org/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_auditor1
+    networks:
+      - election
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M

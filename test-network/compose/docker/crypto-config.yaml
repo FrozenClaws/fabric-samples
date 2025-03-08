@@ -1,0 +1,208 @@
+# Defines the cryptographic configuration for the Hyperledger Fabric network
+# 24 organizations: 1 ECI, 7 Os (state/UT election bodies), 14 Cs (constituencies), 2 supporting orgs
+# Each org has 3 peers, 1 user, and 1 admin (default)
+
+OrdererOrgs:
+  - Name: OrdererOrg
+    Domain: orderer.org
+    Specs:
+      - Hostname: orderer1
+      - Hostname: orderer2
+      - Hostname: orderer3
+
+PeerOrgs:
+  # Central Authority: Election Commission of India (ECI)
+  - Name: ECI
+    Domain: eci.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3  # Generates peer0.eci.org, peer1.eci.org, peer2.eci.org
+    Users:
+      Count: 1  # One user (plus admin)
+
+  # State Election Bodies (Os)
+  - Name: UP_O
+    Domain: up-o.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3  # peer0.up-o.org, peer1.up-o.org, peer2.up-o.org
+    Users:
+      Count: 1
+
+  - Name: MH_O
+    Domain: mh-o.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: TN_O
+    Domain: tn-o.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: WB_O
+    Domain: wb-o.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: KA_O
+    Domain: ka-o.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: DL_O
+    Domain: dl-o.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: PD_O
+    Domain: pd-o.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  # Constituencies (Cs) - 2 per state/UT
+  - Name: UP_C1
+    Domain: up-c1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: UP_C2
+    Domain: up-c2.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: MH_C1
+    Domain: mh-c1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: MH_C2
+    Domain: mh-c2.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: TN_C1
+    Domain: tn-c1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: TN_C2
+    Domain: tn-c2.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: WB_C1
+    Domain: wb-c1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: WB_C2
+    Domain: wb-c2.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: KA_C1
+    Domain: ka-c1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: KA_C2
+    Domain: ka-c2.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: DL_C1
+    Domain: dl-c1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: DL_C2
+    Domain: dl-c2.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: PD_C1
+    Domain: pd-c1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: PD_C2
+    Domain: pd-c2.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  # Supporting Organizations
+  - Name: NIC
+    Domain: nic.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+
+  - Name: Auditor1
+    Domain: auditor1.org
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
